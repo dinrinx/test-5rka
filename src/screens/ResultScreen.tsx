@@ -5,11 +5,15 @@ import type { RuleId } from '../types';
 
 interface ResultScreenProps {
   rulesOpened: RuleId[];
+  stars: number[];
+  hintsUsed: number[];
   onRestart: () => void;
 }
 
-export function ResultScreen({ rulesOpened, onRestart }: ResultScreenProps) {
+export function ResultScreen({ rulesOpened, stars, hintsUsed, onRestart }: ResultScreenProps) {
   const [toast, setToast] = useState(false);
+  const totalStars = stars.reduce((sum, s) => sum + s, 0);
+  const noHintLevels = hintsUsed.filter((h) => h === 0).length;
 
   async function handleShare() {
     const url = window.location.href;
@@ -56,6 +60,11 @@ export function ResultScreen({ rulesOpened, onRestart }: ResultScreenProps) {
         </div>
         <div style={{ font: "600 15px/22px 'Manrope',sans-serif", color: 'var(--ink-soft)', textAlign: 'center', flex: 'none' }}>
           уровней пройдено
+        </div>
+
+        <span className="chip">★ {totalStars} из 30</span>
+        <div style={{ font: "600 14px/20px 'Manrope',sans-serif", color: 'var(--ink-soft)', textAlign: 'center', flex: 'none' }}>
+          Без подсказок: {noHintLevels}
         </div>
 
         <div style={{ height: 6, flex: 'none' }} />

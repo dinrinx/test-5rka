@@ -27,4 +27,16 @@ export interface RuleDef {
 export interface Progress {
   currentLevel: number;
   rules: RuleId[];
+  /** Звёзды за каждый из 10 уровней (0, если ещё не пройден). */
+  stars: number[];
+  /** Сколько подсказок использовано на каждом из 10 уровней. */
+  hintsUsed: number[];
+}
+
+export type MascotState = 'idle' | 'happy' | 'sad';
+
+export interface LevelResult {
+  rule?: RuleId;
+  stars: number;
+  hintsUsed: number;
 }

@@ -4,12 +4,12 @@ import { clearProgress, loadProgress, saveProgress } from './lib/storage';
 import { LevelScreen } from './screens/LevelScreen';
 import { ResultScreen } from './screens/ResultScreen';
 import { StartScreen } from './screens/StartScreen';
-import type { Progress, RuleId } from './types';
+import type { LevelResult, Progress } from './types';
 
 type Screen = 'start' | 'level' | 'result';
 
 function emptyProgress(): Progress {
-  return { currentLevel: 1, rules: [] };
+  return { currentLevel: 1, rules: [], stars: Array(10).fill(0), hintsUsed: Array(10).fill(0) };
 }
 
 export default function App() {
@@ -43,16 +43,22 @@ export default function App() {
     setScreen('start');
   }
 
-  function handleLevelComplete(rule?: RuleId) {
+  function handleLevelComplete({ rule, stars, hintsUsed }: LevelResult) {
     const rules = rule && !progress.rules.includes(rule) ? [...progress.rules, rule] : progress.rules;
+    const levelIndex = progress.currentLevel - 1;
+    const starsArr = progress.stars.slice();
+    const hintsArr = progress.hintsUsed.slice();
+    starsArr[levelIndex] = stars;
+    hintsArr[levelIndex] = hintsUsed;
+
     if (progress.currentLevel >= 10) {
-      const finished: Progress = { currentLevel: 10, rules };
+      const finished: Progress = { currentLevel: 10, rules, stars: starsArr, hintsUsed: hintsArr };
       setProgress(finished);
       saveProgress(finished);
       setScreen('result');
       return;
     }
-    const next: Progress = { currentLevel: progress.currentLevel + 1, rules };
+    const next: Progress = { currentLevel: progress.currentLevel + 1, rules, stars: starsArr, hintsUsed: hintsArr };
     setProgress(next);
     saveProgress(next);
   }
@@ -62,7 +68,7 @@ export default function App() {
   }
 
   if (screen === 'result') {
-    return <ResultScreen rulesOpened={progress.rules} onRestart={handleRestart} />;
+    return <ResultScreen rulesOpened={progress.rules} stars={progress.stars} hintsUsed={progress.hintsUsed} onRestart={handleRestart} />;
   }
 
   const level = getLevel(progress.currentLevel);

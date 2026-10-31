@@ -13,7 +13,12 @@ export function loadProgress(): Progress | null {
       typeof parsed.currentLevel === 'number' &&
       Array.isArray(parsed.rules)
     ) {
-      return parsed as Progress;
+      return {
+        currentLevel: parsed.currentLevel,
+        rules: parsed.rules,
+        stars: Array.isArray(parsed.stars) ? parsed.stars : Array(10).fill(0),
+        hintsUsed: Array.isArray(parsed.hintsUsed) ? parsed.hintsUsed : Array(10).fill(0),
+      };
     }
     return null;
   } catch {

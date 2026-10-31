@@ -1,9 +1,19 @@
 import { CELL, GRID_MAX, GRID_MIN, INNER, PAD, SVG_SIZE, clipLineToGrid, toX, toY } from '../lib/graph';
+import { MascotGlyph } from './MascotGlyph';
+import type { MascotState } from '../types';
 
 interface TargetPoint {
   x: number;
   y: number;
   hit: boolean;
+}
+
+interface MascotMark {
+  xPx: number;
+  yPx: number;
+  rotationDeg: number;
+  state: MascotState;
+  scale?: number;
 }
 
 interface GraphSVGProps {
@@ -12,11 +22,13 @@ interface GraphSVGProps {
   points: TargetPoint[];
   ghost?: { k: number; b: number } | null;
   ariaLabel?: string;
+  mascot?: MascotMark | null;
 }
 
 const TICKS = Array.from({ length: GRID_MAX - GRID_MIN + 1 }, (_, i) => GRID_MIN + i);
+const MASCOT_SCALE = 0.3;
 
-export function GraphSVG({ k, b, points, ghost, ariaLabel }: GraphSVGProps) {
+export function GraphSVG({ k, b, points, ghost, ariaLabel, mascot }: GraphSVGProps) {
   const segment = clipLineToGrid(k, b);
   const ghostSegment = ghost ? clipLineToGrid(ghost.k, ghost.b) : null;
 
@@ -133,6 +145,14 @@ export function GraphSVG({ k, b, points, ghost, ariaLabel }: GraphSVGProps) {
       {points.map((p, i) => (
         <TargetPointMark key={i} px={toX(p.x)} py={toY(p.y)} hit={p.hit} />
       ))}
+
+      {mascot && (
+        <g
+          transform={`translate(${mascot.xPx} ${mascot.yPx}) rotate(${mascot.rotationDeg}) scale(${mascot.scale ?? MASCOT_SCALE}) translate(-50 -50)`}
+        >
+          <MascotGlyph state={mascot.state} />
+        </g>
+      )}
     </svg>
   );
 }
