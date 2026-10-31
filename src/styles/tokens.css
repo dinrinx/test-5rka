@@ -1,0 +1,42 @@
+:root {
+  /* Цвета */
+  --ink: #0b2a5b;
+  --ink-soft: #1b3a70;
+  --color-k: #2f6bff;
+  --color-b: #ff8a3d;
+  --lime: #ddf55a;
+  --white: #ffffff;
+
+  /* Фон сцены */
+  --bg-gradient: radial-gradient(120% 55% at 18% 6%, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0) 62%),
+    radial-gradient(80% 45% at 92% 58%, rgba(255, 255, 255, 0.38), rgba(255, 255, 255, 0) 70%),
+    linear-gradient(180deg, #cfe6ff 0%, #9cc9ff 42%, #5aa2ff 100%);
+
+  /* Стекло */
+  --glass-bg: linear-gradient(160deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.48));
+  --glass-bg-strong: linear-gradient(160deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.56));
+  --glass-bg-dashed: linear-gradient(160deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.26));
+  --glass-border: 1px solid rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 18px 40px rgba(14, 60, 140, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --glass-blur: blur(22px) saturate(1.25);
+
+  /* Радиусы */
+  --r-xl: 32px;
+  --r-xl-desktop: 40px;
+  --r-lg: 28px;
+  --r-md: 24px;
+  --r-sm: 16px;
+  --r-pill: 28px;
+
+  /* Кнопки / чипы */
+  --btn-primary-bg: var(--ink);
+  --btn-primary-shadow: 0 14px 28px rgba(11, 42, 91, 0.32);
+  --btn-ghost-bg: rgba(255, 255, 255, 0.7);
+  --btn-ghost-blur: blur(16px);
+  --btn-ghost-shadow: 0 8px 18px rgba(14, 60, 140, 0.16);
+  --chip-shadow: 0 4px 12px rgba(11, 42, 91, 0.14);
+
+  /* Типографика */
+  --font-text: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Unbounded', 'Manrope', sans-serif;
+}
