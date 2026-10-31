@@ -1,32 +1,50 @@
-# React + TypeScript + Vite
+# Прямая
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Веб-тренажёр по линейной функции **y = kx + b** для 7–8 класса. Ученик двигает слайдеры (или вводит числа) и проводит прямую через точки-цели — на 10 уровнях, без регистрации и бэкенда.
 
-Currently, two official plugins are available:
+**Репозиторий:** https://github.com/dinrinx/test-5rka
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Для кого
 
-## React Compiler
+Для школьников 7–8 класса, которые проходят тему «линейная функция», и для их учителей/родителей — как короткая (~10 минут) интерактивная замена скучным графикам в учебнике.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Механика
 
-## Expanding the Oxlint configuration
+- **10 уровней**: 1–5 — двигаешь один коэффициент слайдером (второй зафиксирован и показан в формуле серым с замочком), 6–8 — оба коэффициента слайдерами, 9–10 — вводишь k и b числом (без слайдеров, с кнопками «±»).
+- **Попадание**: цель на графике загорается, как только прямая проходит через неё; в slider-режиме уровень засчитывается автоматически, в input-режиме — по кнопке «Проверить».
+- **Подсказки**: 3 уровня (направление → принцип → призрак правильной прямой пунктиром), появляются через 20 секунд/15 движений без успеха (на input-уровнях — после первой неверной попытки).
+- **Звёзды**: 1–3 за уровень, в зависимости от числа движений/попыток и того, сколько подсказок использовано.
+- **Правила**: 4 карточки (про k, про b, про знак k, про k = 0) открываются по ходу прохождения и собираются на итоговом экране.
+- **Маскот**: катится по прямой при успехе, реагирует репликами на подсказки и ошибки.
+- Прогресс сохраняется в `localStorage` — можно закрыть вкладку и продолжить с того же уровня.
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## Стек
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+- [Vite](https://vite.dev) + [React 19](https://react.dev) + TypeScript
+- Свой CSS (переменные + глобальные стили), без UI-библиотек
+- График — чистый SVG, своя реализация (без chart-библиотек)
+- Состояние — React state, прогресс — `localStorage`
+- Деплой — статический билд (Vercel)
+
+## Как запустить локально
+
+Нужен Node.js 18+.
+
+```bash
+npm install
+npm run dev
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Откроется на [http://localhost:5173](http://localhost:5173).
+
+Другие команды:
+
+```bash
+npm run build    # production-сборка в dist/ (tsc + vite build)
+npm run preview  # локальный просмотр собранного dist/
+npm run lint     # oxlint
+```
+
+## Деплой
+
+Проект собирается статически (`npm run build` → `dist/`) и настроен для Vercel (`vercel.json`): импортируйте репозиторий на [vercel.com](https://vercel.com), framework распознается как Vite автоматически.
